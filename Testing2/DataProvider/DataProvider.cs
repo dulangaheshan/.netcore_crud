@@ -25,6 +25,8 @@ namespace Testing2.DataProvider
             }
         }
 
+ 
+
         public User GetUser(int CustomerId)
         {
             using (IDbConnection dbConnection = Connection)
@@ -35,5 +37,21 @@ namespace Testing2.DataProvider
                 return dbConnection.Query<User>(sQuery, new {Id = CustomerId}).FirstOrDefault();
             }
         }
+
+        public User AddUser(User user)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                string sQuery = "INSERT INTO Customers(FirstName,LastName,Passw,Email)" +
+                                "VALUES(@firstName,@lastName,@passw,@email)";
+
+                dbConnection.Open();
+                dbConnection.Execute(sQuery, user);
+                return user;
+
+            }
+        }
+
+
     }
 }

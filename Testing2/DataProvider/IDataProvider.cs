@@ -9,5 +9,6 @@ namespace Testing2.DataProvider
     interface IDataProvider
     {
         User GetUser(int CustomerId);
+        User AddUser(User user);
     }
 }
