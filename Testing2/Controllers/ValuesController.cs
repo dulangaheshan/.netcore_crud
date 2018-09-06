@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Testing2.DataProvider;
@@ -35,12 +37,35 @@ namespace Testing2.Controllers
 
         // POST api/values
         [HttpPost]
-        public User Post([FromBody] User user)
+        public ActionResult Post([FromBody] User user)
         {
-             this._dataprovider.AddUser(user);
-             return user;
-        }
+            if (this._dataprovider.AddUser(user))
+            {
+                return Ok("login sucess");
+            }
+            else
+            {
+                return BadRequest("user already exists");
+            }
 
+        }
+        // POST api/login
+        
+        [HttpPost("login")]
+        public ActionResult Post([FromBody] Login login)
+        {
+            if (this._dataprovider.UserLogin(login))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("Username or password is incorrect");
+            }
+            
+
+
+        }
         //// PUT api/values/5
         //[HttpPut("{id}")]
         //public void Put(int id, [FromBody] string value)
